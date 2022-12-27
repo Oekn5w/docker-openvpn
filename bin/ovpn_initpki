@@ -18,6 +18,13 @@ nopass=$1
 # Provides a sufficient warning before erasing pre-existing files
 easyrsa init-pki
 
+echo "PKI initialized. Adapt the settings now if you want non-default settings."
+read -p"Press Enter to continue"
+if [[ $? -ne 0 ]]; then
+  echo "Aborting"
+  exit 1
+fi
+
 # CA always has a password for protection in event server is compromised. The
 # password is only needed to sign client/server certificates.  No password is
 # needed for normal OpenVPN operation.
