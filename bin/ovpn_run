@@ -10,6 +10,16 @@ fi
 
 set -e
 
+# wait until the crl file has been created (which indicates finalized installation)
+CRL_FILE=$EASYRSA_PKI/crl.pem
+if [ ! -f "$CRL_FILE" ]; then
+  echo "Set up the openVPN server by running ovpn_genconfig and ovpn_initpki convenience scripts in the container."
+  echo "Waiting (indefinitely) for CRL file (indicating finished initialization) ..."
+  while [ ! -f "$CRL_FILE" ]; do sleep 1; done
+  echo "CRL found! Resuming normal startup."
+  sleep 1
+fi
+
 cd $OPENVPN
 
 # Build runtime arguments array based on environment
